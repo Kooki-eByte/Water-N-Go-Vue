@@ -1,0 +1,2 @@
+# Water-N-Go-Vue
+Vue remaster of Water and Go web application utilizing Vue 3 TypeScript front end SPA framework composition API implementation. TypeScript Express backend utilizing class based API system, singleton route design pattern, and DAOs (Data Access Objects) and DTOs (Data Transfer Objects) for scalable reusable code for models. Authentication and Authorization middleware for API routes.
