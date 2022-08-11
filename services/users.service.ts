@@ -27,3 +27,5 @@ class UserService implements ICRUD {
     return UsersDao.getUserByEmail(email);
   }
 }
+
+export default new UserService();
