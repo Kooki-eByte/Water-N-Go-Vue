@@ -27,7 +27,7 @@ export class UserRoutes extends CommonRoutesConfig {
           res: express.Response,
           next: express.NextFunction
         ) => {
-          // this middleware function runs before ANY request to /user/:userId
+          // this generic middleware function runs before ANY request to /user/:userId
           next();
         }
       )

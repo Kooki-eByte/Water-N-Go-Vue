@@ -4,6 +4,8 @@
   "description": "Water n go web application to help you stay on track to water your plants",
   "main": "index.js",
   "scripts": {
+    "start-server": "tsc && node --unhandled-rejections=strict ./dist/server.js",
+    "debug-server": "export DEBUG=* && npm run start-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
