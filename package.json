@@ -1,0 +1,19 @@
+{
+  "name": "water-n-go-vue",
+  "version": "1.0.0",
+  "description": "Water n go web application to help you stay on track to water your plants",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kooki-eByte/Water-N-Go-Vue.git"
+  },
+  "author": "Cristian Hornedo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kooki-eByte/Water-N-Go-Vue/issues"
+  },
+  "homepage": "https://github.com/Kooki-eByte/Water-N-Go-Vue#readme"
+}
