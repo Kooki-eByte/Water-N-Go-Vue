@@ -18,5 +18,6 @@ export abstract class CommonRoutesConfig {
     return this.name;
   }
 
+  // Where we will create the endpoints for given routes of the API
   abstract configureRoutes(): express.Application;
 }
