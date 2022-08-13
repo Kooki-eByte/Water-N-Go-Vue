@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Kooki-eByte/Water-N-Go-Vue#readme",
   "dependencies": {
+    "argon2": "^0.28.7",
     "cors": "^2.8.5",
     "debug": "^4.3.4",
     "express": "^4.18.1",
