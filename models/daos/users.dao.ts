@@ -13,6 +13,7 @@ class UserDao {
 
   async addUser(user: IUserDto) {
     user.id = shortid.generate();
+    this.users.push(user);
     return user.id;
   }
 
@@ -21,19 +22,25 @@ class UserDao {
   }
 
   async getUserById(userId: string) {
-    return this.users.find((user: { id: string }) => {
-      user.id === userId;
+    let data = null;
+
+    this.users.find((user: IUserDto) => {
+      if (user.id !== userId) return;
+      data = user;
     });
+
+    return data;
   }
 
-  async getUserByEmail(email: string) {
-    const index = this.users.findIndex((user: { email: string }) => {
-      user.email === email;
+  async getUserByEmail(email: string): Promise<IUserDto | null> {
+    let data = null;
+
+    this.users.find((user: IUserDto) => {
+      if (user.email !== email) return;
+      data = user;
     });
 
-    let currentUser = this.users[index];
-
-    return currentUser ? currentUser : null;
+    return data;
   }
 
   async updateUserById(userId: string, user: IUserDto) {

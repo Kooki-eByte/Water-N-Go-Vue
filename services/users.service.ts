@@ -23,7 +23,7 @@ class UserService implements ICRUD {
     return UsersDao.updateUserById(id, resource);
   }
 
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string): Promise<IUserDto | null> {
     return UsersDao.getUserByEmail(email);
   }
 }
