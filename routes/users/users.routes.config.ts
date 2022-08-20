@@ -23,13 +23,15 @@ export class UserRoutes extends CommonRoutesConfig {
     // /users/:userId
     this.app.param("userId", UsersMiddleware.extractUserId);
 
+    // .all will validate all requests from /users/:userId to make sure they are authorized
     this.app
       .route("/users/:userId")
       .all(UsersMiddleware.validateUserExists)
       .get(UsersController.getUserById)
       .delete(UsersController.removeUser);
 
-    this.app.post("/users/:userId", [
+    // seperated due to middleware requirements
+    this.app.put(`/users/:userId`, [
       UsersMiddleware.validateRequiredUserBodyFields,
       UsersMiddleware.validateEmailMatchesUser,
       UsersController.updateUser,
