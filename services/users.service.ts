@@ -11,7 +11,7 @@ class UserService implements ICRUD {
     return UsersDao.removeUserById(id);
   }
 
-  async getAll(limit: number, page: number) {
+  async getAll() {
     return UsersDao.getUsers();
   }
 
@@ -19,11 +19,11 @@ class UserService implements ICRUD {
     return UsersDao.getUserById(id);
   }
 
-  async putById(id: string, resource: IUserDto) {
-    return UsersDao.updateUserById(id, resource);
+  async putById(id: string, user: IUserDto) {
+    return UsersDao.updateUserById(id, user);
   }
 
-  async getUserByEmail(email: string): Promise<IUserDto | null> {
+  async getUserByEmail(email: string) {
     return UsersDao.getUserByEmail(email);
   }
 }
