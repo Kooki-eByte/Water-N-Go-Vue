@@ -39,7 +39,7 @@ class UsersMiddleware {
     next: express.NextFunction
   ) {
     const user = await UserService.getUserByEmail(req.body.email);
-    if (user && user?.id === req.params.userId) next();
+    if (user && user?._id === req.params.userId) next();
     res.status(400).send({ error: "Invalid email!" });
   }
 

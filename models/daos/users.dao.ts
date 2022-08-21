@@ -52,6 +52,8 @@ class UserDao {
   }
 
   async updateUserById(userId: string, user: IUserDto) {
+    // user.password = await argon2.hash(user.password);
+
     const existingUser = this.User.findByIdAndUpdate(
       userId,
       { $set: user },
