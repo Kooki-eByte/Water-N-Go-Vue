@@ -18,6 +18,7 @@ class UserDao {
       password: { type: String, select: false },
       firstName: String,
       lastName: String,
+      phoneNumber: String,
       permissionFlags: Number,
     },
     { id: false }
