@@ -51,7 +51,7 @@ routes.push(new UserRoutes(app));
 // Simple route to make sure everything is running smoothly
 const serverStarted: string = `Server is running at http://localhost:${port}`;
 app.get("/", (_: express.Request, res: express.Response) => {
-  res.status(200).send("Hello there");
+  res.status(200).send("Hello World");
 });
 
 server.listen(port, () => {

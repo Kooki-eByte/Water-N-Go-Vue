@@ -1,9 +1,10 @@
+import argon2 from "argon2";
 import debug from "debug";
 import shortid from "shortid";
 import MongooseConfig from "../../common/mongoose.config";
 import { IUserDto } from "./../../interfaces/IUserDto";
 
-const logger: debug.IDebugger = debug("app:in-memory-dao");
+const logger: debug.IDebugger = debug("app:users-dao");
 
 class UserDao {
   // This defines our MongoDB collection with user
@@ -29,6 +30,7 @@ class UserDao {
   }
 
   async addUser(user: IUserDto) {
+    logger("Adding new user");
     const userId = shortid.generate();
     const newUser = new this.User({
       _id: userId,
@@ -52,7 +54,8 @@ class UserDao {
   }
 
   async updateUserById(userId: string, user: IUserDto) {
-    // user.password = await argon2.hash(user.password);
+    user.password = await argon2.hash(user.password);
+    logger(`Users-DAO:user object: ${user}`);
 
     const existingUser = this.User.findByIdAndUpdate(
       userId,

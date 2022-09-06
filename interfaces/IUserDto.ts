@@ -5,4 +5,5 @@ export interface IUserDto {
   firstName?: string;
   lastName?: string;
   permissionLevel?: number;
+  phoneNumber?: string;
 }

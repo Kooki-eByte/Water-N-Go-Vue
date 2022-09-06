@@ -1,3 +1,4 @@
+import argon2 from "argon2";
 import debug from "debug";
 import express from "express";
 import UsersService from "../services/users.service";
@@ -6,7 +7,7 @@ const logger: debug.IDebugger = debug("app:users-controller");
 
 class UserController {
   // GET all
-  async listUsers(req: express.Request, res: express.Response) {
+  async listUsers(_: express.Request, res: express.Response) {
     const users = await UsersService.getAll();
     res.status(200).send(users);
   }
@@ -19,15 +20,15 @@ class UserController {
 
   // POST user
   async createUser(req: express.Request, res: express.Response) {
-    // req.body.password = await argon2.hash(req.body.password);
+    req.body.password = await argon2.hash(req.body.password);
     const userId = await UsersService.create(req.body);
     res.status(201).send({ id: userId });
   }
 
   // PUT user
   async updateUser(req: express.Request, res: express.Response) {
-    // TODO: EXPRESS DOES NOT LIKE IT WHEN A REQ.BODY IS MODIFIED TO ITSELF
-    // req.body.password = await argon2.hash(req.body.password);
+    logger("User Controller - update User");
+    req.body.password = await argon2.hash(req.body.password);
     logger(await UsersService.putById(req.params.userId, req.body));
     res.status(204).send();
   }
