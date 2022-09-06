@@ -1,66 +1,74 @@
+import argon2 from "argon2";
 import debug from "debug";
 import shortid from "shortid";
+import MongooseConfig from "../../common/mongoose.config";
 import { IUserDto } from "./../../interfaces/IUserDto";
 
-const logger: debug.IDebugger = debug("app:in-memory-dao");
+const logger: debug.IDebugger = debug("app:users-dao");
 
 class UserDao {
-  users: Array<IUserDto> = [];
+  // This defines our MongoDB collection with user
+  schema = MongooseConfig.getMongoose().Schema;
+
+  // The select: false in the password field will hide this field whenever we get a user or list all users.
+  userSchema = new this.schema(
+    {
+      _id: String,
+      email: String,
+      password: { type: String, select: false },
+      firstName: String,
+      lastName: String,
+      phoneNumber: String,
+      permissionFlags: Number,
+    },
+    { id: false }
+  );
+
+  User = MongooseConfig.getMongoose().model("Users", this.userSchema);
 
   constructor() {
     logger("Created new instance of UsersDao");
   }
 
   async addUser(user: IUserDto) {
-    user.id = shortid.generate();
-    this.users.push(user);
-    return user.id;
+    logger("Adding new user");
+    const userId = shortid.generate();
+    const newUser = new this.User({
+      _id: userId,
+      ...user,
+      permissionFlags: 1,
+    });
+    await newUser.save();
+    return userId;
   }
 
   async getUsers() {
-    return this.users;
+    return this.User.find().exec();
   }
 
   async getUserById(userId: string) {
-    let data = null;
-
-    this.users.find((user: IUserDto) => {
-      if (user.id !== userId) return;
-      data = user;
-    });
-
-    return data;
+    return this.User.findById(userId).exec();
   }
 
-  async getUserByEmail(email: string): Promise<IUserDto | null> {
-    let data = null;
-
-    this.users.find((user: IUserDto) => {
-      if (user.email !== email) return;
-      data = user;
-    });
-
-    return data;
+  async getUserByEmail(email: string) {
+    return this.User.findOne({ email: email }).exec();
   }
 
   async updateUserById(userId: string, user: IUserDto) {
-    const index = this.users.findIndex((user: { id: string }) => {
-      user.id === userId;
-    });
+    user.password = await argon2.hash(user.password);
+    logger(`Users-DAO:user object: ${user}`);
 
-    this.users.splice(index, 1, user);
+    const existingUser = this.User.findByIdAndUpdate(
+      userId,
+      { $set: user },
+      { new: true }
+    ).exec();
 
-    return `${user.id} updated successfully`;
+    return existingUser;
   }
 
   async removeUserById(userId: string) {
-    const index = this.users.findIndex((user: { id: string }) => {
-      user.id === userId;
-    });
-
-    this.users.splice(index, 1);
-
-    return `${userId} removed successfully`;
+    return this.User.deleteOne({ _id: userId }).exec();
   }
 }
 

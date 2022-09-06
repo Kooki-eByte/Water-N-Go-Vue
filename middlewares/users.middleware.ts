@@ -33,21 +33,12 @@ class UsersMiddleware {
     next();
   }
 
-  async validateEmailMatchesUser(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
-    const user = await UserService.getUserByEmail(req.body.email);
-    if (user && user?.id === req.params.userId) next();
-    res.status(400).send({ error: "Invalid email!" });
-  }
-
   async validateUserExists(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) {
+    logger("validate user already exist");
     const user = await UserService.getById(req.params.userId);
     if (!user)
       return res
@@ -62,7 +53,7 @@ class UsersMiddleware {
   // Instead, it’s taken care of in just one spot, the middleware.
   async extractUserId(
     req: express.Request,
-    res: express.Response,
+    _: express.Response,
     next: express.NextFunction
   ) {
     req.body.id = req.params.id;

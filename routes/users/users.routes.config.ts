@@ -21,21 +21,19 @@ export class UserRoutes extends CommonRoutesConfig {
       );
 
     // /users/:userId
-    this.app.param("userId", UsersMiddleware.extractUserId);
+    // this.app.param("userId", UsersMiddleware.extractUserId);
 
     // .all will validate all requests from /users/:userId to make sure they are authorized
     this.app
       .route("/users/:userId")
       .all(UsersMiddleware.validateUserExists)
       .get(UsersController.getUserById)
-      .delete(UsersController.removeUser);
-
-    // seperated due to middleware requirements
-    this.app.put(`/users/:userId`, [
-      UsersMiddleware.validateRequiredUserBodyFields,
-      UsersMiddleware.validateEmailMatchesUser,
-      UsersController.updateUser,
-    ]);
+      .delete(UsersController.removeUser)
+      .put(
+        UsersMiddleware.validateRequiredUserBodyFields,
+        UsersMiddleware.validateUserExists,
+        UsersController.updateUser
+      );
 
     return this.app;
   }
